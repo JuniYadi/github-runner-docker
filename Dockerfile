@@ -1,6 +1,11 @@
 # base
 FROM ubuntu:20.04
 
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
+
 # set the github runner version
 # see https://github.com/actions/runner/releases
 ARG RUNNER_VERSION="2.286.0"
@@ -10,8 +15,36 @@ RUN apt-get update -y && apt-get upgrade -y && useradd -m docker
 
 # install python and the packages the your code depends on along with jq so we can parse JSON
 # add additional packages as necessary
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip
+RUN apt-get install -y --no-install-recommends \
+    apt-transport-https \
+    build-essential \
+    ca-certificates \
+    curl \
+    dirmngr \
+    dumb-init \
+    gettext \
+    gnupg \
+    gpg-agent \
+    inetutils-ping \
+    jq \
+    libcurl4-openssl-dev \
+    libffi-dev \
+    liblttng-ust0 \
+    libssl-dev \
+    locales \
+    openssh-client \
+    python \
+    python3 \
+    python3-dev \
+    python3-pip \
+    python3-venv \
+    software-properties-common \
+    sudo \
+    tar \
+    unzip \
+    wget \
+    zlib1g-dev \
+    zstd
 
 # install aws cli from pip
 RUN pip3 install awscli --upgrade --user
@@ -22,8 +55,7 @@ RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
     && tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
 
 # install some additional dependencies
-RUN chown -R docker ~docker
-# RUN chown -R docker ~docker && /home/docker/actions-runner/bin/installdependencies.sh
+RUN chown -R docker ~docker && /home/docker/actions-runner/bin/installdependencies.sh
 
 # copy over the start.sh script
 COPY start.sh start.sh
