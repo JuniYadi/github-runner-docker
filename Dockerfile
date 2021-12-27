@@ -50,7 +50,7 @@ RUN apt-get install -y --no-install-recommends \
     zstd
 
 # install aws cli from pip
-RUN pip3 install awscli --upgrade --user
+RUN pip3 install awscli --upgrade
 
 # cd into the user directory, download and unzip the github actions runner
 RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
