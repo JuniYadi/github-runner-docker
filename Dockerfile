@@ -10,6 +10,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 # see https://github.com/actions/runner/releases
 ARG RUNNER_VERSION="2.286.0"
 
+# Update LANG
+RUN echo en_US.UTF-8 UTF-8 >> /etc/locale.gen
+
 # update the base packages and add a non-sudo user
 RUN apt-get update -y && apt-get upgrade -y && useradd -m docker
 
