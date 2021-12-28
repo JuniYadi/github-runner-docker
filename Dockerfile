@@ -66,8 +66,6 @@ RUN apt-get update -y && \
     docker-ce-cli \
     containerd.io && \
     usermod -aG docker docker && \
-    systemctl enable docker && \
-    systemctl start docker && \
     docker version
 
 # install docker-compose
