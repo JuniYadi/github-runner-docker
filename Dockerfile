@@ -66,7 +66,6 @@ RUN apt-get update -y && \
     docker-ce-cli \
     containerd.io && \
     service docker start && \
-    groupadd docker && \
     usermod -aG docker docker
 
 # install docker-compose
