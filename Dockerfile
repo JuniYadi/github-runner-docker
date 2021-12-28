@@ -60,7 +60,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
     $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # install docker
-RUN apt-get update -y && apt-get install docker-ce docker-ce-cli containerd.io --no-install-recommends --allow-unauthenticated 
+RUN apt-get update -y && apt-get install -y docker-ce docker-ce-cli containerd.io --no-install-recommends --allow-unauthenticated 
 
 # install docker-compose
 RUN  curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
