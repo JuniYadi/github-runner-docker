@@ -65,7 +65,10 @@ RUN apt-get update -y && \
     docker-ce \
     docker-ce-cli \
     containerd.io && \
+    addgroup --system docker && \
     usermod -aG docker docker && \
+    newgrp docker && \
+    setfacl -m "g:docker:rw" /var/run/docker.sock && \
     docker version
 
 # install docker-compose
