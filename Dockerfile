@@ -66,7 +66,7 @@ RUN apt-get update -y && \
     docker-ce-cli \
     containerd.io && \
     usermod -aG docker docker && \
-    setfacl -m "g:docker:rw" /var/run/docker.sock
+    chmod -x /var/run/docker.sock
 
 # install docker-compose
 RUN  curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
