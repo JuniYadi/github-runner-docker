@@ -60,7 +60,15 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
     $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # install docker
-RUN apt-get update -y && apt-get install -y docker-ce docker-ce-cli containerd.io --no-install-recommends --allow-unauthenticated 
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends --allow-unauthenticated \
+    docker-ce \
+    docker-ce-cli \
+    containerd.io && \
+    usermod -aG docker docker && \
+    systemctl enable docker && \
+    systemctl start docker && \
+    docker version
 
 # install docker-compose
 RUN  curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
@@ -72,7 +80,8 @@ RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
     && tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
 
 # install some additional dependencies
-RUN chown -R docker ~docker && /home/docker/actions-runner/bin/installdependencies.sh
+RUN chown -R docker ~docker && \
+    /home/docker/actions-runner/bin/installdependencies.sh
 
 # copy over the start.sh script
 COPY start.sh start.sh
