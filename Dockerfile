@@ -35,6 +35,7 @@ RUN apt-get install -y --no-install-recommends \
     liblttng-ust0 \
     libssl-dev \
     locales \
+    lsb-release \
     openssh-client \
     python \
     python3 \
@@ -52,6 +53,19 @@ RUN apt-get install -y --no-install-recommends \
 # install aws cli from pip
 RUN pip3 install awscli --upgrade
 
+# setup repo docker
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
+    && echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# install docker
+RUN apt-get update -y && apt-get install docker-ce docker-ce-cli containerd.io --no-install-recommends --allow-unauthenticated 
+
+# install docker-compose
+RUN  curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
+    && chmod +x /usr/local/bin/docker-compose
+
 # cd into the user directory, download and unzip the github actions runner
 RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
     && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
@@ -65,6 +79,9 @@ COPY start.sh start.sh
 
 # make the script executable
 RUN chmod +x start.sh
+
+# clean up
+RUN rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
 
 # since the config and run script for actions are not allowed to be run by root,
 # set the user to "docker" so all subsequent commands are run as the docker user
