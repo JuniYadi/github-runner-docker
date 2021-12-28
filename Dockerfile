@@ -5,6 +5,7 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
+ENV RUNNER_ALLOW_RUNASROOT=1
 
 # set the github runner version
 # see https://github.com/actions/runner/releases
@@ -65,7 +66,6 @@ RUN apt-get update -y && \
     docker-ce \
     docker-ce-cli \
     containerd.io && \
-    service docker start && \
     usermod -aG docker docker
 
 # install docker-compose
