@@ -65,6 +65,7 @@ RUN apt-get update -y && \
     docker-ce \
     docker-ce-cli \
     containerd.io && \
+    service docker start && \
     usermod -aG docker docker && \
     chmod -x /var/run/docker.sock
 
