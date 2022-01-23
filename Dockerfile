@@ -9,7 +9,7 @@ ENV RUNNER_ALLOW_RUNASROOT=1
 
 # set the github runner version
 # see https://github.com/actions/runner/releases
-ARG RUNNER_VERSION="2.286.0"
+ARG RUNNER_VERSION="2.286.1"
 
 # Update LANG
 RUN echo en_US.UTF-8 UTF-8 >> /etc/locale.gen
